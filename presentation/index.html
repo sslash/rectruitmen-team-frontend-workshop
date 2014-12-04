@@ -485,6 +485,51 @@ var Demo = React.createClass({
 });
 ```
 
+---
+# Functional: filter
+ 
+Array.filter: enkel filtrering av lister
+```
+var a = [1, 2, 3, 4, 5, 6 ,7];
+var b = a.filter(function(item) {
+  return item % 2 === 0;
+});
+```
+
+---
+# Functional: map
+Array.map: transformere elementer i ei liste
+```
+var a = [1, 2, 3, 4, 5, 6 ,7];
+var b = a.map(function(item) {
+  return item * 2;
+});
+```
+
+---
+# Functional: reduce
+
+_Given an Array of strings, use Array#reduce to create an object that contains the number of times each 
+string occured in the array. Return the object directly (no need to console.log)._
+
+```
+var input = ['Apple', 'Banana', 'Apple', 'Durian', 'Durian', 'Durian']
+var out = input.reduce(function(countMap, word) {
+  countMap[word] = ++countMap[word] || 1;
+  return countMap;
+}, {});
+```   
+
+--
+The every() method tests whether all elements in the array pass the test implemented by the provided function.
+
+
+```
+# Functional: every
+var input = ['Apple', 'Banana', 'Apple', 'Durian', 'Durian', 'Durian'];
+var result = input.every(function(item) {
+  return item.length > 2;
+});
 
 
     </textarea>
