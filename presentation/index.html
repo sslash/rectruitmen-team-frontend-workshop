@@ -19,7 +19,9 @@ TEAM Rekruttering
 # Agenda
 
 1. Back to the basics
-2. The context might not be what you expect.
+2. Scope is pretty simple
+3. Context might not be what you expect
+4. Async baby!
 3. Functional JS
 
 ---
@@ -209,9 +211,12 @@ countArgs('one', 'two');// 2
 
 In JavaScript we have two scopes:
 1. **Global scope**
-2. **Function (local) scope**
+2. **Function scope (local scope)**
  - Variables defined inside function only accessable inside function
- - Variables defined inside block accessable outside block
+ - Variables defined inside block accessable outside block (_no block scope_)
+
+---
+# Scope examples
 
 ```
 function someFunc() {
@@ -235,7 +240,7 @@ for(i=0;i < 10;i++) {
 ```
 
 ---
-# Functions: scope (cont)
+# Scope - access outer scope
 Functions can access everything from their outer scope
 
 ```
@@ -284,8 +289,12 @@ class: center, middle
 
 ---
 ## I see _this_  and i see _that_, but what is _this_ then?
-__this__ is a magic keyword that points to the (object) context the function is executed in. 
+- __this__ is a magic keyword that points to the (object) context the function is executed in. 
+- All functions execute in a context, accessable via __this__
+- We can choose what the context should be when calling a function 
+ - call, apply, bind
 
+### PS! _context != scope_
 
 ---
 # Functions: Constructors
@@ -401,7 +410,7 @@ setTimeout(a.print.bind(a), 1);
 ```
 
 ---
-# Bind (cont)
+# Bind me something new
 Allows us to bind vars and build new functions
 
 ```
@@ -417,13 +426,20 @@ newFunc(5);
 # What about ajax calls?
 
 ```
-reqwest({
-    url: 'path/to/html', 
-    method: 'get', 
-    success: function (resp) {
-      //what is this?
-    }
-});
+var app = {  
+
+  process: function(data) {
+    console.log(data);
+  },
+
+  fetchSomeData: function() {
+    callAjax(function(data) {
+      this.process(data)
+    });
+  }
+
+}
+app.fetchSomeData();
 ```
 
 ---
@@ -446,6 +462,13 @@ var app = {
 }
 app.fetchSomeData();
 ```
+
+Or just use bind.
+
+---
+class: middle, center
+# React.js
+
 
 ---
 # React make magic happens:
@@ -521,6 +544,10 @@ var Demo = React.createClass({
 ```
 
 ---
+class: middle, center
+# Functional JS
+
+---
 # Functional: filter
  
 Array.filter: enkel filtrering av lister
@@ -555,16 +582,17 @@ var out = input.reduce(function(countMap, word) {
 }, {});
 ```   
 
---
+---
+# Functional: every
 The every() method tests whether all elements in the array pass the test implemented by the provided function.
 
 
 ```
-# Functional: every
 var input = ['Apple', 'Banana', 'Apple', 'Durian', 'Durian', 'Durian'];
 var result = input.every(function(item) {
   return item.length > 2;
 });
+```
 
 
     </textarea>
