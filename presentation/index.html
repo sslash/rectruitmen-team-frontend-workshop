@@ -206,7 +206,7 @@ countArgs('one', 'two');// 2
 
 In JavaScript we have two scopes:
 1. **Global scope**
-2. **Function scope**
+2. **Function (local) scope**
  - Variables defined inside function only accessable inside function
  - Variables defined inside block accessable outside block
 
@@ -256,28 +256,6 @@ function someFunc() {
 ```
 
 ---
-# Functions vs  Methods
-```
-//Method invocation (what is this?)
-var someObj = {
-    value: 0,
-    getValue: function() {
-        return this.value;
-    }
-} 
-someObj.getValue();
-```
-```
-//Function invocation
-var sum = function(a,b)  {
-    //What is this?
-    return a + b;
-} 
-sum(1,2);
-```
-
-
----
 # Functions: Constructors
 Can use _new_ to construct new objects.
 
@@ -305,7 +283,209 @@ var opel = Car("Dad's first car", "opel");
 (from http://stackoverflow.com/questions/1646698/what-is-the-new-keyword-in-javascript)
 
 ---
-Functions: apply / call
+# Functions: Callbacks
+
+- You can pass functions to functions (callbacks)
+- You can pass anonymous functions to functions
+- You can have a function within another function
+- A function can return a function
+
+```
+var someFunc = function(someOtherFunc) {
+    someOtherFunc();
+};
+```
+```
+someFunc(function() {
+    //annonumous callback function
+    alert('hello there');
+});
+```
+
+---
+# Functions vs  Methods
+```
+//Method invocation (what is this?)
+var someObj = {
+    value: 0,
+    getValue: function() {
+        return this.value;
+    }
+} 
+someObj.getValue();
+```
+```
+//Function invocation
+var sum = function(a,b)  {
+    //What is this?
+    return a + b;
+} 
+sum(1,2);
+```
+
+---
+# Functions: apply / call
+Allows objects to borrow methods from other objects (by changing context, _this_)
+
+```
+var obj = {
+    secret: 1,
+    tellSecret: function() {
+        return this.secret;
+    }
+};
+```
+```
+var obj2 = {
+    secret: 42
+};
+```
+```
+obj.tellSecret.call(obj2, /*param1, param2, ..*/);  //42
+obj.tellSecret.apply(obj2, /*[param1, param2, ..]*/);  //42
+```
+(we define the context we want the function to execute in)
+
+---
+# But what is _this_ then?
+_this_ is a magic keyword that points to the (object) context the function is executed in. 
+
+
+---
+# Contexts in the async world
+- ajax calls are async
+- user actions (click, hover, input) are async
+- mesages (pub/sub) are async
+- timer stuff (setTimeout) are async
+
+
+```
+var a = {
+  message: "hello",
+  print: function() {
+    console.log(this.message);
+  }
+}
+
+setTimeout(a.print, 1); //What happens?
+```
+
+---
+# Contexts and bind to the rescue
+The bind() method creates a new function that, when called, has its this keyword set to the provided value. 
+
+```
+fun.bind(thisArg[, arg1[, arg2[, ...]]])
+```
+
+```
+var a = {
+  message: "hello",
+  print: function() {
+    console.log(this.message);
+  }
+}
+setTimeout(a.print.bind(a), 1);
+```
+
+---
+# Bind (cont)
+Allows us to bind vars and build new functions
+
+```
+function many(a, b, c, d) {
+  return a+b+c+d;
+}
+
+var newFunc = many.bind(this, 1, 2, 3);
+newFunc(5);
+```
+
+---
+# What about ajax calls?
+
+```
+reqwest({
+    url: 'path/to/html', 
+    method: 'get', 
+    success: function (resp) {
+      //what is this?
+    }
+});
+```
+
+---
+# React make magic happens:
+```
+var Demo = React.createClass({
+  someFunc: function() {
+    console.log("hello!");
+  },
+
+  onClick: function(e) {
+    this.someFunc(); //will this work?
+  },
+
+  render: function() {
+    return (
+      <div onClick={this.onClick}>
+        <p>Magic</p>
+      </div>
+    );
+  }
+});
+```
+
+
+---
+# React make magic happens (2):
+```
+var Demo = React.createClass({
+  someFunc: function() {
+    console.log("hello!");
+  },
+
+  onClick: function(e) {
+    setTimeout(function() {
+      this.someFunc(); //will this work?
+    }, 1);
+  },
+
+  render: function() {
+    return (
+      <div onClick={this.onClick}>
+        <p>Magic</p>
+      </div>
+    );
+  }
+});
+```
+
+
+---
+# React make magic happens (3):
+```
+var Demo = React.createClass({
+  someFunc: function() {
+    console.log("hello!");
+  },
+
+  onClick: function(e) {
+    //will this work?
+    setTimeout(this.someFunc, 1);
+  },
+
+  render: function() {
+    return (
+      <div onClick={this.onClick}>
+        <p>Magic</p>
+      </div>
+    );
+  }
+});
+```
+
+
 
     </textarea>
     <script src="http://gnab.github.io/remark/downloads/remark-latest.min.js">
