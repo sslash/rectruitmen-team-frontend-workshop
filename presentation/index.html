@@ -3,37 +3,169 @@
   <head>
     <title>Title</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <style type="text/css">
-      @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
-      @import url(http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
-      @import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
-
-      body { font-family: 'Droid Serif'; }
-      h1, h2, h3 {
-        font-family: 'Yanone Kaffeesatz';
-        font-weight: normal;
-      }
-      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-    </style>
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
   </head>
   <body>
     <textarea id="source">
 
 class: center, middle
 
-# Title
+# Frontend Workshop 
+
+TEAM Rekruttering
 
 ---
 
 # Agenda
 
-1. Introduction
-2. Deep-dive
-3. ...
+1. Back to the basics
+2. Scopes
+5. Functional JS
 
 ---
 
-# Introduction
+# Primitive data types
+- number 
+- string
+- boolean
+- null 
+- undefiend
+
+Everything else: **Object**
+
+---
+# Boolean
+_All values becomes true when converted to boolean, except:_
+
+- ""
+- null
+- false
+- NaN
+- undefined
+- 0
+- empty array
+
+---
+# null me
+
+```javascript
+var a = null;
+typeof a;               //object
+null instanceof Object; //false
+a;                      //null
+
+var b = 1 + null;
+b;                      //1
+
+var c = 1 * null;
+c;                      //0
+
+var d = 1 + undefined;
+d;                      //NaN
+```
+
+---
+# Boolean comparison
+
+- **==** converted to _same type_ before the value is compared
+- **===** must be same type and equal value
+
+```javascript
+2!="2"; //false
+2=="2"; //true
+
+2!=="2" //true
+2==="2" //false
+```
+
+---
+# Object literal
+- Mutable keyed collections
+- collection of object properties (key/value-pairs)
+- Objects are passed around by reference (not copied)
+- Can delete properties
+
+```javascript
+var o = {
+  key1: 'value',
+  key2: 42
+};
+
+o.key1;      //'value'
+o['key2'];   //42
+o.key3;      //undefined
+
+delete o.key1;
+o.key1;      //undefined
+```
+
+---
+# Array
+Used to store multiple elements in an array-like object
+
+```javascript
+var array = [ 1, 2, 3 ];
+array.push(4);
+array[1];           // 2
+array[4] = 5;
+array.length;       // 5
+array.pop();        // 5
+array.pop();        // 4
+```
+
+---
+# Array methods:
+- **concat()**  Joins two or more arrays, and returns a copy of the joined arrays
+- **indexOf()** Search the array for an element and returns its position
+- **join()**  Joins all elements of an array into a string
+- **lastIndexOf()** Search the array for an element, starting at the end, and returns its position
+- **pop()** Removes the last element of an array, and returns that element
+- **push()**  Adds new elements to the end of an array, and returns the new length
+- **reverse()** Reverses the order of the elements in an array
+- **shift()** Removes the first element of an array, and returns that element
+- **slice()** Selects a part of an array, and returns the new array
+- **sort()**  Sorts the elements of an array
+- **splice()**  Adds/Removes elements from an array
+- **toString()**  Converts an array to a string, and returns the result
+- **unshift()** Adds new elements to the beginning of an array, and returns the new length
+- **valueOf()** Returns the primitive value of an array
+
+
+---
+# Looping arrays
+
+Booring old looping
+```javascript
+var a = [2, 3, 8];
+for (var i=0; i < a.length; i++) {
+    a[i];   //2, 3 ,8
+};
+```
+
+Never do this:
+```javascript
+var a = [2, 3, 8];
+a.sun = 32;
+for (var key in a) {
+    a[key];   //2, 3 ,8, 32
+}
+```
+
+
+After ES5 we usually loop like this:
+```javascript
+var a = [2, 3, 8];
+a.forEach(function(item, idx) {
+  console.log(item);
+});
+```
+
+---
+# Scope
+
+In JavaScript we have two scopes:
+1. global scope
+2. function scope
 
     </textarea>
     <script src="http://gnab.github.io/remark/downloads/remark-latest.min.js">
