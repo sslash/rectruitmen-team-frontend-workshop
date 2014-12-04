@@ -1,0 +1,13 @@
+Oppgave: 
+
+Teknologi: react, node.js
+
+Lag idèbank-tjeneste hvor vi kan foreslå nye ideer til Karriersiden.
+
+Mulig funksjonalitet:
+- Liste over foreslåtte ideer.
+- Legge til nye idéer
+- Kommentere på ideer
+- Stemme på ideer
+- Tagge ideer
+- 

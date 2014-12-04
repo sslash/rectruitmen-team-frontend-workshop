@@ -19,11 +19,14 @@ TEAM Rekruttering
 # Agenda
 
 1. Back to the basics
-2. Scopes
-5. Functional JS
+2. The context might not be what you expect.
+3. Functional JS
 
 ---
+class: center, middle
+# Back to the basics
 
+---
 # Primitive data types
 - number 
 - string
@@ -256,6 +259,35 @@ function someFunc() {
 ```
 
 ---
+# Functions: Callbacks
+
+- You can pass functions to functions (callbacks)
+- You can pass anonymous functions to functions
+- You can have a function within another function
+- A function can return a function
+
+```
+var someFunc = function(someOtherFunc) {
+    someOtherFunc();
+};
+```
+```
+someFunc(function() {
+    //annonumous callback function
+    alert('hello there');
+});
+```
+
+---
+class: center, middle
+# Context
+
+---
+## I see _this_  and i see _that_, but what is _this_ then?
+__this__ is a magic keyword that points to the (object) context the function is executed in. 
+
+
+---
 # Functions: Constructors
 Can use _new_ to construct new objects.
 
@@ -280,30 +312,14 @@ var opel = Car("Dad's first car", "opel");
 - It executes the constructor function, using the newly created object whenever this is mentioned.
 - It returns the newly created object, unless the constructor function returns a non-primitive value.
 
+(skipped)
+
 (from http://stackoverflow.com/questions/1646698/what-is-the-new-keyword-in-javascript)
 
----
-# Functions: Callbacks
 
-- You can pass functions to functions (callbacks)
-- You can pass anonymous functions to functions
-- You can have a function within another function
-- A function can return a function
-
-```
-var someFunc = function(someOtherFunc) {
-    someOtherFunc();
-};
-```
-```
-someFunc(function() {
-    //annonumous callback function
-    alert('hello there');
-});
-```
 
 ---
-# Functions vs  Methods
+# Context: Functions vs  Methods
 ```
 //Method invocation (what is this?)
 var someObj = {
@@ -325,7 +341,7 @@ sum(1,2);
 
 ---
 # Functions: apply / call
-Allows objects to borrow methods from other objects (by changing context, _this_)
+Allows objects to borrow methods from other objects, by changing the context (_this_)
 
 ```
 var obj = {
@@ -346,13 +362,9 @@ obj.tellSecret.apply(obj2, /*[param1, param2, ..]*/);  //42
 ```
 (we define the context we want the function to execute in)
 
----
-# But what is _this_ then?
-_this_ is a magic keyword that points to the (object) context the function is executed in. 
-
 
 ---
-# Contexts in the async world
+# Contexts matters in an async world
 - ajax calls are async
 - user actions (click, hover, input) are async
 - mesages (pub/sub) are async
@@ -371,7 +383,7 @@ setTimeout(a.print, 1); //What happens?
 ```
 
 ---
-# Contexts and bind to the rescue
+# _bind_ to the rescue
 The bind() method creates a new function that, when called, has its this keyword set to the provided value. 
 
 ```
@@ -412,6 +424,27 @@ reqwest({
       //what is this?
     }
 });
+```
+
+---
+# A common thrick is to store this in that
+
+```
+var app = {
+  
+  process: function(data) {
+    console.log(data);
+  },
+
+  fetchSomeData: function() {
+    var that = this;
+    callAjax(function(data) {
+      that.process(data)
+    });
+  }
+
+}
+app.fetchSomeData();
 ```
 
 ---
@@ -460,6 +493,8 @@ var Demo = React.createClass({
   }
 });
 ```
+
+_React will not be able to bind annonymous inner functions_
 
 
 ---
